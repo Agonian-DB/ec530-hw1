@@ -41,6 +41,6 @@ def test_match_points():
     # Edge case: No coordinates in array_b
     array_a = [(40.7128, -74.0060)]
     array_b = []
-    with pytest.raises(ValueError):  # 修改为捕获 ValueError
+    with pytest.raises(ValueError):
         match_points(array_a, array_b)
 
