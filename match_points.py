@@ -2,7 +2,8 @@ from gps_distance import gps_distance
 
 
 def match_points(array_a, array_b):
-
+    if not array_b:
+        raise ValueError("array_b cannot be empty")
     closest_indices = []
 
     for point_a in array_a:
@@ -18,4 +19,5 @@ def match_points(array_a, array_b):
         closest_indices.append(closest_index)
 
     return closest_indices
+
 
