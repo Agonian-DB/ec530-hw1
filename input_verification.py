@@ -1,8 +1,9 @@
 import re
 
 def input_verification(raw_data):
-
+    
     result = []
+    raw_data = " ".join(raw_data.split())
     lines = raw_data.splitlines()
 
     for line in lines:
