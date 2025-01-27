@@ -4,23 +4,43 @@ from input_verification import input_verification
 from match_points import match_points
 
 def test_gps_distance():
-    # Known distance between New York and London
+    """
+    Test the distance between New York and London using gps_distance.
+    Known approximate distance: ~5570.22 km
+    """
     new_york = (40.7128, -74.0060)
     london = (51.5074, -0.1278)
-    assert pytest.approx(gps_distance(new_york, london), 0.1) == 5570.22
+    
+    assert gps_distance(new_york, london) == pytest.approx(5570.22, 0.1)
 
 def test_input_verification():
+    """
+    Test the input_verification function with various formats.
+    """
+
     # Case 1: Directional indicators
     raw_data = "40.7128° N 74.0060° W"
-    assert input_verification(raw_data) == [(40.7128, -74.006)]
+    result = input_verification(raw_data)
+    assert len(result) == 1
+    lat, lon = result[0]
+    assert lat == pytest.approx(40.7128, 1e-12)
+    assert lon == pytest.approx(-74.006, 1e-12)
 
     # Case 2: Simple decimals
     raw_data = "51.5074 -0.1278"
-    assert input_verification(raw_data) == [(51.5074, -0.1278)]
+    result = input_verification(raw_data)
+    assert len(result) == 1
+    lat, lon = result[0]
+    assert lat == pytest.approx(51.5074, 1e-12)
+    assert lon == pytest.approx(-0.1278, 1e-12)
 
-    # Case 3: Degrees without directional indicators
+    # Case 3: Degrees without directional indicators (e.g., "40 42.8 74 00.6")
     raw_data = "40 42.8 74 00.6"
-    assert input_verification(raw_data) == [(40.71333333333334, 74.01)]
+    result = input_verification(raw_data)
+    assert len(result) == 1
+    lat, lon = result[0]
+    assert lat == pytest.approx(40.71333333333334, 1e-12)
+    assert lon == pytest.approx(74.01, 1e-12)
 
     # Case 4: Invalid format
     raw_data = "Invalid Data"
@@ -28,19 +48,18 @@ def test_input_verification():
         input_verification(raw_data)
 
 def test_match_points():
-    # Testing closest match
+    """
+    Test the match_points function with different scenarios.
+    """
     array_a = [(40.7128, -74.0060), (51.5074, -0.1278)]
     array_b = [(41.8781, -87.6298), (51.1657, 10.4515)]
     assert match_points(array_a, array_b) == [0, 1]
 
-    # Edge case: Identical coordinates
     array_a = [(40.7128, -74.0060)]
     array_b = [(40.7128, -74.0060)]
     assert match_points(array_a, array_b) == [0]
 
-    # Edge case: No coordinates in array_b
     array_a = [(40.7128, -74.0060)]
     array_b = []
     with pytest.raises(ValueError):
         match_points(array_a, array_b)
-
