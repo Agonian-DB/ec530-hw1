@@ -33,9 +33,10 @@ def input_verification(raw_data):
         if match:
             lat_deg, lat_min, lon_deg, lon_min = map(float, match.groups())
             lat = lat_deg + lat_min / 60
-            lon = lon_deg + lon_min / 60
+            lon = lon_deg + lon_min / 60 
             result.append((lat, lon))
             continue
+
 
         # If no valid format matches
         raise ValueError(f"Invalid coordinate format: {line}")
